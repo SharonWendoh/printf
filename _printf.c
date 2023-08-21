@@ -36,6 +36,7 @@ int _printf(const char *format, ...)
 					break;
 			}
 			count += function_to_call(args);
+			i++;
 		}
 		else
 		{
