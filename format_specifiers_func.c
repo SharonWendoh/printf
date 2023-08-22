@@ -13,7 +13,6 @@ int _print_ch(va_list args)
 	char c = va_arg(args, int);
 
 	write(1, &c, 1);
-
 	return (1);
 }
 
@@ -28,15 +27,17 @@ int _print_str(va_list args)
 {
 
 	char *str = va_arg(args, char *);
-	int len;
+	int count = 0;
 
 	if (!str)
 		str = "(null)";
 
-	len = strlen(str);
-	write(1, str, 1);
+	for (; *str; str++, count++)
+	{
+		write(1, str, 1);
+	}
 
-	return (len);
+	return (count);
 }
 /**
  * _print_pct - Prints the percent symbol.
