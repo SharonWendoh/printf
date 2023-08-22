@@ -7,23 +7,26 @@
 
 void init_format_handlers(format_mapper_t *format_mappers)
 {
-	format_mappers[0].specifier ='c';
+	format_mappers[0].specifier = 'c';
 	format_mappers[0].handler = _print_ch;
 
-	format_mappers[1].specifier ='s';
+	format_mappers[1].specifier = 's';
 	format_mappers[1].handler = _print_str;
 
-	format_mappers[2].specifier ='%';
+	format_mappers[2].specifier = '%';
 	format_mappers[2].handler = _print_pct;
 
-	format_mappers[3].specifier ='i';
+	format_mappers[3].specifier = 'i';
 	format_mappers[3].handler = _print_int;
 
-	format_mappers[4].specifier ='d';
+	format_mappers[4].specifier = 'd';
 	format_mappers[4].handler = _print_int;
 
-	format_mappers[5].specifier ='\0';
-	format_mappers[5].handler = NULL;
+	format_mappers[5].specifier = 'b';
+	format_mappers[5].handler = _print_binary;
+
+	format_mappers[6].specifier = '\0';
+	format_mappers[6].handler = NULL;
 }
 
 /**
@@ -38,7 +41,7 @@ int _printf(const char *format, ...)
 	int i = 0, count = 0;
 
 	format_function function_to_call;
-	format_mapper_t format_mappers[6];
+	format_mapper_t format_mappers[7];
 
 	init_format_handlers(format_mappers);
 
