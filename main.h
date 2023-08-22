@@ -1,22 +1,15 @@
 #include <stdarg.h>
-#include <stdio.h>
+#include <unistd.h>
+#include <limits.h>
 #include <string.h>
-#ifndef MAIN_H
-#define MAIN_H
-/**
- * struct specifier - structure for different specifiers
- *
- * @s: type of specifier
- * @function: function to perform
- */
-typedef struct specifier
-{
-	char *s;
-	int (*function)(va_list);
-} format_specifier;
 
-int (*get_specifier(char *format))(va_list);
-int _printf(char *format, ...);
-int _putchar(char c);
-int c(va_list c);
-int s(va_list s);
+int _printf(const char *format, ...);
+int _printf_int(int n);
+int _print_ch(va_list args);
+int _print_str(va_list args);
+int _print_pct(va_list args);
+int _print_int(va_list args);
+char *int_to_str(int n, char *b);
+char *strrev(char *s);
+
+#endif /* MAIN_H */

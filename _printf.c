@@ -7,32 +7,36 @@
  *
  * Return: the number of characters printed
  */
-int _printf(char *format, ...)
+int _printf(const char *format, ...)
 {
-	int length = 0;
-	va_list list;
-	int (*handler)(va_list);
+	va_list args;
+	int i = 0, count = 0, (*function_to_call)(va_list);
 
-	va_start(list, format);
-	while (*format)
+	va_start(args, format);
+	for (; format && format[i]; i++)
 	{
-		if (*format == '%')
+		if (format[i] == '%' && (format[i + 1] == 'c' ||
+		format[i + 1] == 's' || format[i + 1] == '%' ||
+		format[i + 1] == 'd' || format[i + 1] == 'i'))
 		{
 			format++;
 			if (*format == '%')
 			{
-				_putchar('%');
-				length++;
-			}
-			else
-			{
-			handler = get_specifier(format);
+				case 'c':
+					function_to_call = _print_ch;
+					break;
+				case 's':
+					function_to_call = _print_str;
+					break;
+				case '%':
+					function_to_call = _print_pct;
+					break;
+				case 'd':
+				case 'i':
+					count += _printf_int(va_arg(args, int));
+					i++;
+					continue;
 
-			if (handler != NULL)
-			{
-				length += handler(list);
-				format++;
-			}
 			}
 		}
 		else
