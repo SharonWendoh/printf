@@ -19,7 +19,7 @@ int _printf(const char *format, ...)
 		format[i + 1] == 'd' || format[i + 1] == 'i'))
 		{
 
-			switch (format[i + 1])
+			switch (format[i + 1]) /* call functions */
 			{
 				case 'c':
 					function_to_call = _print_ch;
