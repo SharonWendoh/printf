@@ -15,8 +15,7 @@ int _printf(const char *format, ...)
 	for (; format && format[i]; i++)
 	{
 		if (format[i] == '%' && (format[i + 1] == 'c' ||
-		format[i + 1] == 's' || format[i + 1] == '%' ||
-		format[i + 1] == 'd' || format[i + 1] == 'i'))
+		format[i + 1] == 's' || format[i + 1] == '%'))
 		{
 
 			switch (format[i + 1]) /* call functions */
@@ -30,11 +29,6 @@ int _printf(const char *format, ...)
 				case '%':
 					function_to_call = _print_pct;
 					break;
-				case 'd':
-				case 'i':
-					count += _printf_int(va_arg(args, int));
-					i++;
-					continue;
 			}
 			count += function_to_call(args);
 			i++;
@@ -90,22 +84,4 @@ int _print_str(va_list args)
 	}
 
 	return (count);
-}
-
-/**
- * _print_pct - Prints the percent symbol.
- * @args: The arguments list.
- *
- * Return: Number of characters printed.
- */
-
-int _print_pct(va_list args)
-{
-
-	char c = '%';
-
-	(void)args; /* Indicate that args is intentionally not used */
-
-	write(1, &c, 1);
-	return (1);
 }
