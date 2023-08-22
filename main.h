@@ -20,5 +20,3 @@ int _printf(char *format, ...);
 int _putchar(char c);
 int c(va_list c);
 int s(va_list s);
-
-#endif /* MAIN_H */
