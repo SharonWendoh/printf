@@ -1,4 +1,4 @@
-#ifndef MAIN_H
+#ifndef MAIN_H /* check if main.h file is defined */
 #define MAIN_H
 
 #include <stdarg.h>
