@@ -1,110 +1,46 @@
+#include <stdarg.h>
 #include "main.h"
-
 /**
- * _printf - our custom printf function.
- * @format: our format string.
+ * _printf - produces an output according to a format
  *
- * Return: Number of characters to be printed.
+ * @format: format to be followed
+ *
+ * Return: the number of characters printed
  */
-
-int _printf(const char *format, ...)
+int _printf(char *format, ...)
 {
+	int length = 0;
+	va_list list;
+	int (*handler)(va_list);
 
-	va_list args;
-	int i, count = 0;
-	int (*function_to_call)(va_list);
-
-	va_start(args, format);
-	for (i = 0; format && format[i]; i++)
+	va_start(list, format);
+	while (*format)
 	{
-
-		if (format[i] == '%' && (format[i + 1] == 'c' ||
-					format[i + 1] == 's' || format[i + 1] == '%'))
+		if (*format == '%')
 		{
-
-			switch (format[i + 1])
+			format++;
+			if (*format == '%')
 			{
-
-				case 'c':
-					function_to_call = _print_ch;
-					break;
-				case 's':
-					function_to_call = _print_str;
-					break;
-				case '%':
-					function_to_call = _print_pct;
-					break;
+				_putchar('%');
+				length++;
 			}
-			count += function_to_call(args);
-			i++;
+			else
+			{
+			handler = get_specifier(format);
+
+			if (handler != NULL)
+			{
+				length += handler(list);
+				format++;
+			}
+			}
 		}
 		else
 		{
-
-			write(1, &format[i], 1);
-			count++;
+			_putchar(*format);
+			length++;
 		}
+		format++;
 	}
-
-	va_end(args);
-	return (count);
-}
-
-/**
- * _print_ch - Prints a character.
- * @args: The arguments list.
- *
- * Return: Number of characters printed.
- */
-
-int _print_ch(va_list args)
-{
-
-	char c = va_arg(args, int);
-
-	write(1, &c, 1);
-	return (1);
-}
-
-/**
- * _print_str - Prints a string.
- * @args: The arguments list.
- *
- * Return: Number of characters printed.
- */
-
-int _print_str(va_list args)
-{
-
-	char *str = va_arg(args, char *);
-	int count = 0;
-
-	if (!str)
-		str = "(null)";
-
-	for (; *str; str++, count++)
-	{
-
-		write(1, str, 1);
-	}
-
-	return (count);
-}
-
-/**
- * _print_pct - Prints the percent symbol.
- * @args: The arguments list.
- *
- * Return: Number of characters printed.
- */
-
-int _print_pct(va_list args)
-{
-
-	char c = '%';
-
-	(void)args; /* Indicate that args is intentionally not used */
-
-	write(1, &c, 1);
-	return (1);
-}
+	va_end(list);
+	return (length);
