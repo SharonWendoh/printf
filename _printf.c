@@ -85,3 +85,20 @@ int _print_str(va_list args)
 
 	return (count);
 }
+/**
+ * _print_pct - Prints the percent symbol.
+ * @args: The argument list.
+ *
+ * Return: NUmber of characters printed.
+ */
+
+int _print_pct(va_list args)
+{
+
+	char c = '%';
+
+	(void)args; /* Indicate that args is intentionally not used. */
+
+	write(1, &c, 1);
+	return (1);
+}
