@@ -1,6 +1,32 @@
 #include "main.h"
 
 /**
+ * init_format_handlers - Initialize the array of format handlers.
+ * @format_mappers: Array to fill with format handlers.
+ */
+
+void init_format_handlers(format_mapper_t *format_mappers)
+{
+	format_mappers[0].specifier ='c';
+	format_mappers[0].handler = _print_ch;
+
+	format_mappers[1].specifier ='s';
+	format_mappers[1].handler = _print_str;
+
+	format_mappers[2].specifier ='%';
+	format_mappers[2].handler = _print_pct;
+
+	format_mappers[3].specifier ='i';
+	format_mappers[3].handler = _print_int;
+
+	format_mappers[4].specifier ='d';
+	format_mappers[4].handler = _print_int;
+
+	format_mappers[5].specifier ='\0';
+	format_mappers[5].handler = NULL;
+}
+
+/**
  * _printf - our custom printf function.
  * @format: our format string.
  *
@@ -9,33 +35,34 @@
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int i = 0, count = 0, (*function_to_call)(va_list);
+	int i = 0, count = 0;
+
+	format_function function_to_call;
+	format_mapper_t format_mappers[6];
+
+	init_format_handlers(format_mappers);
 
 	va_start(args, format);
 	for (; format && format[i]; i++)
 	{
-		if (format[i] == '%' && (format[i + 1] == 'c' ||
-		format[i + 1] == 's' || format[i + 1] == '%'))
+		if (format[i] == '%')
 		{
-
-			switch (format[i + 1]) /* call functions */
+			function_to_call =
+				fetch_handler(format_mappers, format[i + 1]);
+			if (function_to_call)
 			{
-				case 'c':
-					function_to_call = _print_ch;
-					break;
-				case 's':
-					function_to_call = _print_str;
-					break;
-				case '%':
-					function_to_call = _print_pct;
-					break;
+
+				count += function_to_call(args);
+				i++;
 			}
-			count += function_to_call(args);
-			i++;
+			else
+			{
+				write(1, &format[i], 1);
+				count++;
+			}
 		}
 		else
 		{
-
 			write(1, &format[i], 1);
 			count++;
 		}
@@ -46,60 +73,32 @@ int _printf(const char *format, ...)
 }
 
 /**
- * _print_ch - Prints a character.
- * @args: The arguments list.
+ * fetch_handler - function that fetches the appropriate handler functiion
+ * for a given specifier.
+ * @format_mappers: Array of format handlers.
+ * @specifier: format specifier character.
  *
- * Return: Number of characters printed.
+ * Return: NULL, or pointer to the appropriate function if NULL is not found.
  */
 
-int _print_ch(va_list args)
+format_function fetch_handler(format_mapper_t *format_mappers, char specifier)
 {
 
-	char c = va_arg(args, int);
+	int i;
 
-	write(1, &c, 1);
-	return (1);
-}
-
-/**
- * _print_str - Prints a string.
- * @args: The arguments list.
- *
- * Return: Number of characters printed.
- */
-
-int _print_str(va_list args)
-{
-
-	char *str = va_arg(args, char *);
-	int count = 0;
-
-	if (!str)
-		str = "(null)";
-
-	for (; *str; str++, count++)
+	for (i = 0; format_mappers[i].specifier; i++)
 	{
+		if (format_mappers[i].specifier == specifier)
+		{
+			if (!format_mappers[i].handler)
+			{
 
-		write(1, str, 1);
+				return (NULL);
+			}
+			return (format_mappers[i].handler);
+		}
 	}
 
-	return (count);
-}
+	return (NULL);
 
-/**
- * _print_pct - Prints the percent symbol.
- * @args: The arguments list.
- *
- * Return: Number of characters printed.
- */
-
-int _print_pct(va_list args)
-{
-
-	char c = '%';
-
-	(void)args; /* Indicate that args is intentionally not used */
-
-	write(1, &c, 1);
-	return (1);
 }
