@@ -83,7 +83,7 @@ int _printf(const char *format, ...)
 
 	buffer_t buffer = {{0}, 0};
 	int i = 0;
-	int printed_chars = 0; /* total number of characters to be printed */
+	int printed_chars = 0; /* total number of characters to print. */
 
 	format_mapper_t format_mappers[11];
 
