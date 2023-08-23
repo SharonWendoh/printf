@@ -42,6 +42,35 @@ void init_format_handlers(format_mapper_t *format_mappers)
 }
 
 /**
+ * handle_format - Handles the format specifiers and buffer characters.
+ * @format: The format string.
+ * @i: Pointer to the index in the format string.
+ * @args: List of arguments.
+ * @buffer: The buffer to store characters.
+ * @printed_chars: Pointer to the current count of characters printed.
+ * @format_mappers: Array of format handlers.
+ */
+
+void handle_format(const char *format, int *i, va_list args, buffer_t *buffer,
+		int *printed_chars, format_mapper_t *format_mappers)
+{
+	format_function function_to_call;
+
+	function_to_call = fetch_handler(format_mappers, format[*i + 1]);
+	if (function_to_call)
+	{
+
+		*printed_chars += function_to_call(args, buffer);
+		(*i)++;
+	}
+	else
+	{
+
+		add_to_buffer(buffer, format[*i]);
+	}
+}
+
+/**
  * _printf - our custom printf function.
  * @format: our format string.
  *
@@ -49,42 +78,43 @@ void init_format_handlers(format_mapper_t *format_mappers)
  */
 int _printf(const char *format, ...)
 {
-	va_list args;
-	int i = 0, count = 0;
+	if (!format)
+		return (-1);
 
-	format_function function_to_call;
+	buffer_t buffer = {{0}, 0};
+	int i = 0;
+	int printed_chars = 0; /* total number of characters to be printed */
+
 	format_mapper_t format_mappers[11];
+
+	va_list args;
+
+	va_start(args, format);
 
 	init_format_handlers(format_mappers);
 
-	va_start(args, format);
 	for (; format && format[i]; i++)
 	{
 		if (format[i] == '%')
 		{
-			function_to_call =
-				fetch_handler(format_mappers, format[i + 1]);
-			if (function_to_call)
-			{
-
-				count += function_to_call(args);
-				i++;
-			}
-			else
-			{
-				write(1, &format[i], 1);
-				count++;
-			}
+			handle_format(format, &i, args, &buffer,
+				      &printed_chars, format_mappers);
 		}
 		else
 		{
-			write(1, &format[i], 1);
-			count++;
+			add_to_buffer(&buffer, format[i]);
+				      printed_chars++;
 		}
 	}
 
+	if (buffer.index > 0)
+	{
+		write(1, buffer.buffer, buffer.index);
+	}
+
 	va_end(args);
-	return (count);
+
+	return (printed_chars);
 }
 
 /**
