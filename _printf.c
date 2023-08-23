@@ -25,8 +25,20 @@ void init_format_handlers(format_mapper_t *format_mappers)
 	format_mappers[5].specifier = 'b';
 	format_mappers[5].handler = _print_binary;
 
-	format_mappers[6].specifier = '\0';
-	format_mappers[6].handler = NULL;
+	format_mappers[6].specifier = 'u';
+	format_mappers[6].handler = _print_u;
+
+	format_mappers[7].specifier = 'o';
+	format_mappers[7].handler = _print_o;
+
+	format_mappers[8].specifier = 'x';
+	format_mappers[8].handler = _print_x;
+
+	format_mappers[9].specifier = 'X';
+	format_mappers[9].handler = _print_X;
+
+	format_mappers[10].specifier = '\0';
+	format_mappers[10].handler = NULL;
 }
 
 /**
@@ -41,7 +53,7 @@ int _printf(const char *format, ...)
 	int i = 0, count = 0;
 
 	format_function function_to_call;
-	format_mapper_t format_mappers[7];
+	format_mapper_t format_mappers[11];
 
 	init_format_handlers(format_mappers);
 

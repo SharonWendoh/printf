@@ -22,3 +22,78 @@ int _print_binary(va_list args)
 
 	return (len);
 }
+
+/**
+ * _print_o - Prints an octal number.
+ * @args: The arguments list.
+ *
+ * Return: Number of characters printed.
+ */
+
+int _print_o(va_list args)
+{
+
+	unsigned int n = va_arg(args, unsigned int);
+	char b[66];
+	int i;
+
+	char *converted = octal_to_str(n, b);
+
+	for (i = 0; converted[i]; i++)
+	{
+
+		write(1, &converted[i], 1);
+	}
+
+	return (i);
+}
+
+/**
+ * _print_x - Prints a hexadecimal number (lowercase).
+ * @args: The arguments list.
+ *
+ * Return: Number of characters printed.
+ */
+
+int _print_x(va_list args)
+{
+
+	unsigned int n = va_arg(args, unsigned int);
+	char b[16];
+	int i;
+
+	hex_to_str(n, b, 0);
+
+	for (i = 0; b[i]; i++)
+	{
+
+		write(1, &b[i], 1);
+	}
+
+	return (i);
+}
+
+/**
+ * _print_X - Prints a hexadecimal number (uppercase).
+ * @args: The arguments list.
+ *
+ * Return: Number of characters printed.
+ */
+
+int _print_X(va_list args)
+{
+
+	unsigned int n = va_arg(args, unsigned int);
+	char b[16];
+	int i;
+
+	hex_to_str(n, b, 1);
+
+	for (i = 0; b[i]; i++)
+	{
+
+		write(1, &b[i], 1);
+	}
+
+	return (i);
+}
