@@ -28,10 +28,17 @@ int _print_pct(va_list args);
 int _print_int(va_list args);
 int _print_binary(va_list args);
 char *int_to_str(int n, char *b);
+int _print_u(va_list args);
+int _print_o(va_list args);
+int _print_x(va_list args);
+int _print_X(va_list args);
 char *strrev(char *s);
 void init_format_handlers(format_mapper_t *format_mappers);
 format_function fetch_handler
 (format_mapper_t *format_mappers, char specifiers);
 char *unsigned_int_to_binary(unsigned int n);
+char *uint_to_str(unsigned int n, char *b);
+char *octal_to_str(unsigned int n, char *b);
+char *hex_to_str(unsigned int n, char *b, int uppercase);
 
 #endif /* MAIN_H */
