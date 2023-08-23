@@ -3,32 +3,31 @@
 /**
  * int_to_str - Converts integer to string.
  * @n: Integer to convert into string
- * @b: A buffer to hold the string representation of the integer.
+ * @buf: A pointer to the buffer_t struct.
  *
- * Return: A pointer to the string representation of the integer.
+ * Return: The number of characters written or -1 if error.
  */
 
-char *int_to_str(int n, char *b)
+int int_to_str(int n, buffer_t *buf)
 {
 
-	int i = 0;
+	int count = 0;
 	int is_negative = 0;
+	char digits[12];
 
 	if (n == 0)
 	{
-
-		b[i++] = '0';
-		b[i] = '\0';
-
-		return (b);
+		return (add_to_buffer(buf, '0'));
 	}
 
 	if (n == INT_MIN)
 	{
 
-		b[i++] = '8';
+		if (add_to_buffer(buf, '8') == -1)
+			return (-1);
 		n /= 10;
 		n = -n;
+		count++;
 	}
 	else if (n < 0)
 	{
@@ -38,40 +37,17 @@ char *int_to_str(int n, char *b)
 	while (n != 0)
 	{
 
-		b[i++] = (n % 10) + '0';
+		digits[count++] = (n % 10) + '0';
 		n /= 10;
 	}
 	if (is_negative)
+		digits[count++] = '-';
+
+	for (int i = count - 1; i >= 0; i--)
 	{
-
-		b[i++] = '-';
+		if (add_to_buffer(buf, digits[i]) == -1)
+			return (-1);
 	}
-	b[i] = '\0';
 
-	return (strrev(b));
-}
-
-/**
- * strrev - Reverse the string.
- * @s: string to be reversed.
- *
- * Return: A pointer to the reversed string.
- */
-
-char *strrev(char *s)
-{
-
-	int i = 0, j = strlen(s) - 1;
-	char temp;
-
-	while (i < j)
-	{
-
-		temp = s[i];
-		s[i] = s[j];
-		s[j] = temp;
-		i++;
-		j--;
-	}
-	return (s);
+	return (count);
 }

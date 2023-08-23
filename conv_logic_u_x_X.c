@@ -3,72 +3,98 @@
 /**
  * uint_to_str - Converts unsigned int to string.
  * @n: Unsinged int value to be converted.
- * @b: Buffer to hold string.
+ * @buf:Pinter to the buffer_t struct.
  *
- * Return: Pointer to the string.
+ * Return: Number of characters written or -1 if error.
  */
 
-char *uint_to_str(unsigned int n, char *b)
+int uint_to_str(unsigned int n, buffer_t *buf)
 {
 
-	char *ptr = b + 20;
-	*ptr = '\0';
+	int count = 0;
+	char digits[11];
 
-	do {
+	if (n == 0)
+	{
+		(add_to_buffer(buf, '0'));
+		return (1);
+	}
 
-		*--ptr = '0' + (n % 10);
+	while (n > 0)
+	{
+		digits[count++] = '0' + (n % 10);
 		n /= 10;
-	} while (n > 0);
+	}
 
-	return (ptr);
+	for (int i = count - 1; i >= 0; i--)
+	{
+		if (add_to_buffer(buf, digits[i]) == -1)
+			return (-1);
+	}
+
+	return (count);
 }
 /**
  * octal_to_str - Converts octal int to string
  * @n: Unsinged int value to be converted.
- * @b: Buffer to hold string.
+ * @buf:Pinter to the buffer_t struct.
  *
- * Return: Pointer to the string.
+ * Return: Number of characters written or -1 if error.
  */
 
-char *octal_to_str(unsigned int n, char *b)
+int octal_to_str(unsigned int n, buffer_t *buf)
 {
 
-	char *ptr = b + 65;
-	*ptr = '\0';
+	int count = 0;
+	char digits[12];
 
-	do {
+	if (n == 0)
+	{
+		return (add_to_buffer(buf, '0'));
+	}
 
-		*--ptr = '0' + (n % 8);
+	while (n > 0)
+	{
+		digits[count++] = '0' + (n % 8);
 		n /= 8;
-	} while (n > 0);
+	}
 
-	return (ptr);
+	for (int i = count - 1; i >= 0; i--)
+	{
+		if (add_to_buffer(buf, digits[i]) == -1)
+			return (-1);
+	}
+
+	return (count);
 }
 /**
  * hex_to_str - Converts hexadecimal int to string.
  * @n: Unsinged int value to be converted.
- * @b: Buffer to hold string.
+ * @buf:Pinter to the buffer_t struct.
  * @uppercase: Parameter to use for ternary operation
  *
- * Return: Pointer to the string.
+ * Return: Number of characters written or -1 if error.
  */
 
-char *hex_to_str(unsigned int n, char *b, int uppercase)
+int hex_to_str(unsigned int n, buffer_t *buf, int uppercase)
 {
 
-	char *ptr = b + 8;
+	int count = 0;
 	char chars[] = "0123456789abcdef";
 	char CHARS[] = "0123456789ABCDEF";
+	char digits[9];
 
-	*ptr = '\0';
-
-	do {
-
-		*--ptr = uppercase ? CHARS[n % 16] : chars[n % 16];
+	while (n > 0)
+	{
+		digits[count++] = uppercase ? CHARS[n % 16] : chars[n % 16];
 		n /= 16;
-	} while (n > 0);
+	}
 
-	return (ptr);
+	for (int i = count - 1; i >= 0; i--)
+	{
+		if (add_to_buffer(buf, digits[i]) == -1)
+			return (-1);
+	}
 
-
+	return (count);
 }
