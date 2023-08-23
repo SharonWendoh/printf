@@ -78,3 +78,27 @@ int _print_int(va_list args)
 
 	return (i);
 }
+
+/**
+ * _print_u - Prints an unsigned integer.
+ * @args: The arguments list.
+ *
+ * Return: The number of characters printed.
+ */
+
+int _print_u(va_list args)
+{
+	unsigned int n = va_arg(args, unsigned int);
+	char b[21];
+	int i;
+
+	char *converted = uint_to_str(n, b);
+
+	for (i = 0; converted[i]; i++)
+	{
+
+		write(1, &converted[i], 1);
+	}
+
+	return (i);
+}
