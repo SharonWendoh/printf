@@ -13,6 +13,7 @@ int unsigned_int_to_binary(unsigned int n, buffer_t *buf)
 {
 
 	int count = 0;
+	unsigned int highest_bit_pos = 1u << (sizeof(n) * 8 - 1);
 
 	if (n == 0)
 	{
@@ -22,8 +23,6 @@ int unsigned_int_to_binary(unsigned int n, buffer_t *buf)
 		}
 		return (1);
 	}
-
-	unsigned int highest_bit_pos = 1u << (sizeof(n) * 8 - 1);
 
 	while (!(n & highest_bit_pos))
 	{

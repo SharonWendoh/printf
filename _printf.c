@@ -78,8 +78,6 @@ void handle_format(const char *format, int *i, va_list args, buffer_t *buffer,
  */
 int _printf(const char *format, ...)
 {
-	if (!format)
-		return (-1);
 
 	buffer_t buffer = {{0}, 0};
 	int i = 0;
@@ -88,6 +86,10 @@ int _printf(const char *format, ...)
 	format_mapper_t format_mappers[11];
 
 	va_list args;
+
+	if (!format)
+		return (-1);
+
 
 	va_start(args, format);
 

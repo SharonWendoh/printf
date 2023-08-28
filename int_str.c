@@ -11,7 +11,7 @@
 int int_to_str(int n, buffer_t *buf)
 {
 
-	int count = 0;
+	int count = 0, i;
 	int is_negative = 0;
 	char digits[12];
 
@@ -43,7 +43,7 @@ int int_to_str(int n, buffer_t *buf)
 	if (is_negative)
 		digits[count++] = '-';
 
-	for (int i = count - 1; i >= 0; i--)
+	for (i = count - 1; i >= 0; i--)
 	{
 		if (add_to_buffer(buf, digits[i]) == -1)
 			return (-1);

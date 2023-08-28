@@ -11,7 +11,7 @@
 int uint_to_str(unsigned int n, buffer_t *buf)
 {
 
-	int count = 0;
+	int count = 0, i;
 	char digits[11];
 
 	if (n == 0)
@@ -26,7 +26,7 @@ int uint_to_str(unsigned int n, buffer_t *buf)
 		n /= 10;
 	}
 
-	for (int i = count - 1; i >= 0; i--)
+	for (i = count - 1; i >= 0; i--)
 	{
 		if (add_to_buffer(buf, digits[i]) == -1)
 			return (-1);
@@ -45,7 +45,7 @@ int uint_to_str(unsigned int n, buffer_t *buf)
 int octal_to_str(unsigned int n, buffer_t *buf)
 {
 
-	int count = 0;
+	int count = 0, i;
 	char digits[12];
 
 	if (n == 0)
@@ -59,7 +59,7 @@ int octal_to_str(unsigned int n, buffer_t *buf)
 		n /= 8;
 	}
 
-	for (int i = count - 1; i >= 0; i--)
+	for (i = count - 1; i >= 0; i--)
 	{
 		if (add_to_buffer(buf, digits[i]) == -1)
 			return (-1);
@@ -79,7 +79,7 @@ int octal_to_str(unsigned int n, buffer_t *buf)
 int hex_to_str(unsigned int n, buffer_t *buf, int uppercase)
 {
 
-	int count = 0;
+	int count = 0, i;
 	char chars[] = "0123456789abcdef";
 	char CHARS[] = "0123456789ABCDEF";
 	char digits[9];
@@ -90,7 +90,7 @@ int hex_to_str(unsigned int n, buffer_t *buf, int uppercase)
 		n /= 16;
 	}
 
-	for (int i = count - 1; i >= 0; i--)
+	for (i = count - 1; i >= 0; i--)
 	{
 		if (add_to_buffer(buf, digits[i]) == -1)
 			return (-1);
